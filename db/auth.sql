@@ -35,6 +35,41 @@ CREATE TABLE assign_user_to_role (
     FOREIGN KEY(role_id) REFERENCES ROLE(role_id)
 );
 
+DROP TABLE IF EXISTS oauth_client_details;
+CREATE TABLE IF NOT EXISTS oauth_client_details (
+    client_id VARCHAR(255) NOT NULL PRIMARY KEY,
+    client_secret VARCHAR(255) NOT NULL,
+    resource_ids VARCHAR(255) DEFAULT NULL,
+    scope VARCHAR(255) DEFAULT NULL,
+    authorized_grant_types VARCHAR(255) DEFAULT NULL,
+    web_server_redirect_uri VARCHAR(255) DEFAULT NULL,
+    authorities VARCHAR(255) DEFAULT NULL,
+    access_token_validity INTEGER DEFAULT NULL,
+    refresh_token_validity INTEGER DEFAULT NULL,
+    additional_information VARCHAR(4096) DEFAULT NULL,
+    autoapprove VARCHAR(255) DEFAULT NULL
+);
+
+INSERT INTO oauth_client_details (
+    client_id,
+    client_secret,
+    resource_ids,
+    scope,
+    authorized_grant_types,
+    web_server_redirect_uri,
+    authorities,
+    access_token_validity,
+    refresh_token_validity,
+    additional_information,
+    autoapprove) VALUES
+('WEB_CLIENT_APP','{bcrypt}$2a$10$EOs8VROb14e7ZnydvXECA.4LoIhPOoFHKvVF/iBZ/ker17Eocz4Vi',
+    'WEB_APP_RESOURCE',
+    'role_admin,role_user','authorization_code,password,refresh_token,implicit',
+    NULL,NULL,900,3600,'{}',NULL),
+('USER_CLIENT_APP_EOs8VROb14e7ZnydvXECA','{bcrypt}$2a$10$EOs8VROb14e7ZnydvXECA.4LoIhPOoFHKvVF/iBZ/ker17Eocz4Vi',
+    'WEB_APP_RESOURCE',
+    'role_admin,role_user','authorization_code,password,refresh_token,implicit',
+    NULL,NULL,900,3600,'{}',NULL);
 
 INSERT INTO permission (permission_id, permission_name) VALUES
 (1, 'CREATE_NOTE'),
@@ -44,8 +79,8 @@ INSERT INTO permission (permission_id, permission_name) VALUES
 (5, 'VIEW_NOTE');
 
 INSERT INTO role (role_id, role_name) VALUES
-(1, 'ADMINISTRATOR'),
-(2, 'AUDITOR');
+(1, 'ADMIN'),
+(2, 'USER');
 
 INSERT INTO user (user_id, name, email_id, password) VALUES
 (1, 'John', 'john@gmail.com','$2a$10$jbIi/RIYNm5xAW9M7IaE5.WPw6BZgD8wcpkZUg0jm8RHPtdfDcMgm');
