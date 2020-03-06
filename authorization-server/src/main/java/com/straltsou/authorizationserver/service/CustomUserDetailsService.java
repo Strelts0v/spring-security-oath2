@@ -1,31 +1,37 @@
 package com.straltsou.authorizationserver.service;
 
-import com.straltsou.authorizationserver.entity.User;
+import com.straltsou.authorizationserver.entity.CustomUser;
+import com.straltsou.authorizationserver.entity.UserEntity;
+import com.straltsou.authorizationserver.repository.OAuthRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import com.straltsou.authorizationserver.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    OAuthRepository oAuthRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
 
-        if (user == null) {
-            throw new BadCredentialsException("Bad credentials");
+        UserEntity userEntity;
+
+        try {
+            userEntity = oAuthRepository.getUserDetails(username);
+
+            if (userEntity != null && userEntity.getId() != null && !"".equalsIgnoreCase(userEntity.getId())) {
+                return new CustomUser(userEntity);
+            } else {
+                throw new UsernameNotFoundException(String.format("User %s was not found in the database", username));
+            }
+        } catch (Exception e) {
+            throw new UsernameNotFoundException(String.format("User %s was not found in the database", username));
         }
 
-        new AccountStatusUserDetailsChecker().check(user);
-
-        return user;
     }
+
 }

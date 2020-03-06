@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: resource-server
+
+security:
+  oauth2:
+    resource:
+      jwt:
+        key-value: >
+          -----BEGIN PUBLIC KEY-----
+          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr/nwA6c8CKqIh9fCfjtu
+          Wg6nOndO8N6LMApwPpnlqdXZCMvMMRZlAnAR5SDAgjw2Fmc0ISk9i54Qwr6ZedkF
+          kYo68wjkOC7GyE4puWgPQXQjS7bAXzERt7lHBVC2I8PTANhg/d4Z/JGRNwfojBOd
+          +SkmMJ4lt7csBx/3NDmIVsgphJxJ1reVJ1ZGhSL12fVf6kYapfo98pUB/BWQyL9F
+          mpxla5yg6Iy7euSM1L3sK0wc3emDnIHN29uubGh3VvcAv64DkgVbIXJH4b+xMYgm
+          EHT71rAG+Yx9jtR4BqjoeVXqlhl4WGJNIPhnn9XduBSdapIPXxtCR7hONzbElXRc
+          UQIDAQAB
+          -----END PUBLIC KEY-----
+server:
+  port: 9090

@@ -3,7 +3,7 @@ package com.straltsou.authorizationserver.config;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.straltsou.authorizationserver.entity.User;
+import com.straltsou.authorizationserver.entity.CustomUser;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -13,11 +13,15 @@ public class CustomTokenEnhancer extends JwtAccessTokenConverter {
 
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
-
+        CustomUser user = (CustomUser) authentication.getPrincipal();
         Map<String, Object> info = new LinkedHashMap<>(accessToken.getAdditionalInformation());
 
-        info.put("email", user.getEmail());
+        if (user.getId() != null)
+            info.put("id", user.getId());
+        if (user.getName() != null)
+            info.put("name", user.getName());
+        if (user.getUsername() != null)
+            info.put("userName", user.getUsername());
 
         DefaultOAuth2AccessToken customAccessToken = new DefaultOAuth2AccessToken(accessToken);
         customAccessToken.setAdditionalInformation(info);
